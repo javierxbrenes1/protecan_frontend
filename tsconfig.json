@@ -1,0 +1,12 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "noImplicitAny": true,
+    "module": "es2020",
+    "allowSyntheticDefaultImports": true,
+    "typeRoots": [
+      "./src/types"
+    ]
+  }
+}
