@@ -30,7 +30,7 @@ module.exports = {
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.protecanseguridad.app",
-      "versionCode": 3
+      "versionCode": process.env.ANDROID_VERSION_CODE
     },
     "web": {
       "favicon": "./assets/favicon.png"
