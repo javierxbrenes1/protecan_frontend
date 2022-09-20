@@ -8,10 +8,11 @@ import { useQuery } from '@apollo/react-hooks';
 import { GetCdrResponse } from '../../graphqlTypes/responses';
 import { GET_CDR } from '../../queries';
 import { useGlobal } from '../../globalContext';
+import theme from '../../theme';
 
 const routes = [
-    { key: 'entrance', title: 'Entrada', icon: 'login', color: "#184260" },
-    { key: 'revision', title: 'Revisión', icon: 'truck-check', color: '#246492' }
+    { key: 'entrance', title: 'Entrada', icon: 'login', color: theme.colors.primaryDarker },
+    { key: 'revision', title: 'Revisión', icon: 'truck-check', color:  theme.colors.primary }
 ]
 
 

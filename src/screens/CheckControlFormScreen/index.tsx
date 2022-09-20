@@ -19,6 +19,7 @@ import DialogMessage from '../../components/DialogMessage';
 import theme from '../../theme';
 import { parseCdrCollectionToCdrEntry } from '../../utils/dataMassagers';
 import { cdr } from '../../queries';
+import useCreateCDRCopy from '../../hooks/useCreateCDRCopy';
 
 const getClientDetailsFromItem = (item?: CdrEntry): { id: string, name: string } | null => {
     if (!item) return null;
@@ -54,6 +55,7 @@ const CheckcontrolFormScreen: FC = () => {
     const { params: { mode, item } } = useRoute() as { params: { mode: CheckControlFormMode, item?: CdrEntry } };
     const [newCdrClient, setNewCdrClient] = useState('');
     const [cdrItem, setCdrItem] = useState(item);
+    const [handleCreateCopy] = useCreateCDRCopy();
     const [cdrCreated, setCdrCreated] = useState(mode !== CheckControlFormMode.add);
     const [dataSavedOnServer, setDataSavedOnServer] = useState(false);
     const [mutationData, setMutationData] = useState<Record<string, Record<string, any>>>({});
@@ -159,6 +161,27 @@ const CheckcontrolFormScreen: FC = () => {
         handleSave();
     };
 
+    const handleOnSave = () => {
+        Keyboard.dismiss();
+        handleSave();
+    }
+
+    const handleUseAsTemplate = async () => {
+        if(cdrItem) {
+            setShowLoading(true);
+            try {
+                const newItem = await handleCreateCopy(cdrItem);
+                setCdrItem(newItem);
+            }catch(err) {
+                setErrorMessage('No se pudo crear el nuevo CDR, intenta nuevamente');
+                setShowErrorDialog(true);
+            }finally {
+                setShowLoading(false);
+            }
+        }
+    }
+    const isDraft = cdrItem?.status === CDR_STATUS.draft;
+
     return (
         <CheckControlFormContext.Provider value={{
             cdrCreated,
@@ -173,7 +196,7 @@ const CheckcontrolFormScreen: FC = () => {
             <CheckControl clientDetails={getClientDetailsFromItem(cdrItem)} onClientSelection={setNewCdrClient} />
             {cdrCreated && !!cdrItem?.id && (
                 <>
-                    <View style={styles.buttonsContainer}>
+                    <View style={isDraft? styles.buttonsContainer : styles.buttonsContainerNoDraft}>
                         <Button
                             style={globalStyles.button}
                             contentStyle={globalStyles.buttonContent}
@@ -183,18 +206,15 @@ const CheckcontrolFormScreen: FC = () => {
                             Enviar
                         </Button>
                         <View style={{ flex: .1 }} />
-                        {cdrItem?.status === CDR_STATUS.draft && <Button
+                        <Button
                             style={globalStyles.button}
                             contentStyle={globalStyles.buttonContent}
-                            mode="contained" icon="content-save"
+                            mode="contained" icon={isDraft ? "content-save" : "content-copy"}
                             loading={updateCdrLoading}
-                            onPress={() => {
-                                Keyboard.dismiss();
-                                handleSave();
-                            }}
+                            onPress={isDraft? handleOnSave : handleUseAsTemplate}
                         >
-                            Guardar
-                        </Button>}
+                            {isDraft ? 'Guardar' : 'Usar como template'}
+                        </Button>
 
                     </View>
                 </>)
@@ -218,6 +238,12 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         paddingHorizontal: 20,
         marginBottom: 20
+    },
+    buttonsContainerNoDraft: {
+        flexDirection: "column",
+        paddingHorizontal: 20,
+        marginBottom: 20,
+        height: 100,
     },
     buttons: {
         flex: 1

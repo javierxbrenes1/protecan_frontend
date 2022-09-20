@@ -7,7 +7,12 @@ import { CDR_STATUS } from "../../constants&Types";
 import { buildWordDate } from "../../utils/dataMassagers";
 import { DraftMenu, CdrMenu } from "../../components/menus";
 
-const CheckItem: FC<{ item: CdrEntry, onDeleteItem?: (item: CdrEntry) => void, downloadPdf: (item: CdrEntry) => void }> = ({ item, onDeleteItem, downloadPdf }) => {
+const CheckItem: FC<{ 
+    item: CdrEntry, 
+    onDeleteItem?: (item: CdrEntry) => void, 
+    downloadPdf: (item: CdrEntry) => void,
+    createCopy: (item: CdrEntry) => Promise<CdrEntry>
+    }> = ({ item, onDeleteItem, downloadPdf, createCopy }) => {
 
     return (
         <View style={styles.container}>
@@ -16,8 +21,16 @@ const CheckItem: FC<{ item: CdrEntry, onDeleteItem?: (item: CdrEntry) => void, d
                     <Headline>CDR #{item.composedId}</Headline>
                     <View style={styles.title}>
                         <StateBadge state={item.status as CDR_STATUS} size={30} />
-                        {item.status === CDR_STATUS.draft && <DraftMenu item={item} onDeletePress={onDeleteItem} />}
-                        {item.status !== CDR_STATUS.draft && <CdrMenu item={item} downloadPdf={downloadPdf} />}
+                        {item.status === CDR_STATUS.draft && 
+                        <DraftMenu 
+                        item={item} 
+                        onDeletePress={onDeleteItem} 
+                        />}
+                        {item.status !== CDR_STATUS.draft && 
+                        <CdrMenu 
+                        item={item} 
+                        downloadPdf={downloadPdf} 
+                        createCopy={createCopy} />}
 
                     </View>
                 </View>

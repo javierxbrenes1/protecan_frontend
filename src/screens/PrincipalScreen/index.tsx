@@ -10,6 +10,8 @@ import PrincipalHeaderMenu from '../../components/PrincipalHeaderMenu';
 import { useGlobal } from '../../globalContext';
 import Loading from '../../components/Loading';
 import FlashMessage from "react-native-flash-message";
+import enviroment from '../../manifest';
+import StagingNote from '../../components/StagingNote';
 
 const Stack = createNativeStackNavigator();
 
@@ -42,11 +44,11 @@ const PrincipalScreen: FC = () => {
                     <Stack.Screen
                         name="CheckControl"
                         component={CheckControlScreen}
-                        options={{ title: 'Control De Revision k-9', headerTitleAlign: 'center', }} />
+                        options={{ title: 'Control de revisión k-9', headerTitleAlign: 'center', }} />
                     <Stack.Screen
                         name="CheckControlForm"
                         component={CheckControlFormScreen}
-                        options={{ title: 'Control De Revision k-9', headerTitleAlign: 'center' }} />
+                        options={{ title: 'Control de revisión k-9', headerTitleAlign: 'center' }} />
                 </Stack.Navigator>
             </NavigationContainer>
         </>

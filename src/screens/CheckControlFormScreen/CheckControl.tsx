@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC, useState } from 'react';
 import { Button, Divider, Title } from 'react-native-paper';
 import { View, StyleSheet, } from 'react-native';
 import { ClientsSelectInput } from '../../components/Inputs';
@@ -6,7 +6,6 @@ import StateBadge from '../../components/StateBadge';
 import { CDR_STATUS, CheckControlFormMode } from '../../constants&Types';
 import { useCheckControlContext } from './CheckControlContext';
 import { useGlobal } from '../../globalContext';
-import { getCdrRelatedId } from '../../utils/dataMassagers';
 import globalStyles from '../../globalStyles';
 
 
@@ -36,7 +35,11 @@ const CheckControl: FC<{
                 <View style={{ flex: 1 }}>
                     {isAddingMode && !cdrCreated
                         ? <ClientsSelectInput label='Selecciona el Cliente' value={client?.id || ''} onChange={handleClientSelectChange} />
-                        : <Title>{client?.name} - CDR #{cdrItem?.composedId}</Title>}
+                        : (<View >
+                                <Title style={styles.cdrInfo}>{client?.name}</Title>
+                                <Title style={styles.cdrInfo}>Certificado #{cdrItem?.composedId}</Title>
+                            </View>)
+                    }
                 </View>
                 <StateBadge state={itemStatus || CDR_STATUS.draft} />
             </View>
@@ -82,7 +85,9 @@ const styles = StyleSheet.create({
     },
     newCdrMessage: {
         textAlign: 'center',
-
+    },
+    cdrInfo: {
+        fontSize: 18
     }
 });
 

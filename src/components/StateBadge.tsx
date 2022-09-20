@@ -13,7 +13,13 @@ const StateBadge: FC<{ state: CDR_STATUS, size?: number }> = ({ state, size }) =
     const { label, color } = attrs[state];
     return (
         <Badge
-            style={{ alignSelf: 'center', marginLeft: 10, backgroundColor: color, color: theme.colors.white }}
+            style={{ 
+                alignSelf: 'center', 
+                marginLeft: 10, 
+                backgroundColor: color, 
+                color: theme.colors.white, 
+                fontSize: 12 
+            }}
             size={size || 34}>
             {label}
         </Badge>

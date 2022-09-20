@@ -20,6 +20,8 @@ import DialogMessage from '../../components/DialogMessage';
 import { buildFiltersForGetCdrs, DELETE_CDR } from '../../mutations/checkControlMutations';
 import { isEmpty } from 'lodash';
 import { downloadPdf } from './downloadFileHandler';
+import useCreateCDRCopy from '../../hooks/useCreateCDRCopy';
+
 
 const buildVaribles = (page: number, client: string, status: string, userId?: string,) => {
     return {
@@ -32,6 +34,7 @@ const buildVaribles = (page: number, client: string, status: string, userId?: st
 const CheckControlScreen = () => {
     const navigation = useNavigation();
     const { userDetails, setShowLoading } = useGlobal();
+    const [handleCreateCopy] = useCreateCDRCopy();
     const [catalog, setCatalog] = useState<CdrEntry[]>([]);
     const [searchAttrs, setSearchAttrs] = useState({
         client: '',
@@ -128,7 +131,13 @@ const CheckControlScreen = () => {
                     <Divider />
                     {isEmpty(catalog) && !loading && (
                         <View>
-                            <Text style={styles.noData}>{Object.values(searchAttrs).filter(Boolean).length === 0 ? 'Inicia una búsqueda' : 'No hay Datos'}</Text>
+                            <Text style={styles.noData}>
+                                {
+                                Object.values(searchAttrs).filter(Boolean).length === 0 
+                                ? 'Inicia una búsqueda' 
+                                : 'No hay Datos'
+                                }
+                            </Text>
                         </View>
                     )}
                 </View>
@@ -138,7 +147,12 @@ const CheckControlScreen = () => {
                         data={catalog}
                         initialNumToRender={5}
                         keyExtractor={(item, index) => { return `${item.id}-${index}` }}
-                        renderItem={(props) => <CheckItem {...props} onDeleteItem={handleDeleteItem} downloadPdf={handleDownloadPdf} />}
+                        renderItem={(props) => <CheckItem 
+                            {...props} 
+                            onDeleteItem={handleDeleteItem} 
+                            downloadPdf={handleDownloadPdf}
+                            createCopy={handleCreateCopy}
+                            />}
                         ListFooterComponent={LoadMore}
                     />
                 }

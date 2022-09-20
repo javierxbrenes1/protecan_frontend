@@ -1,4 +1,6 @@
+import React from 'react';
 import Screen from '../../components/Screen';
+import StagingNote from '../../components/StagingNote';
 import HomeHeader from './HomeHeader';
 import HomeMenu from './HomeMenu';
 import UpdatePassword from './UpdatePassword';
@@ -11,6 +13,7 @@ const Home = () => {
                 <HomeMenu />
             </Screen>
             <UpdatePassword />
+            <StagingNote />
         </>
     );
 }

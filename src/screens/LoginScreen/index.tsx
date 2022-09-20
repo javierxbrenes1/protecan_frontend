@@ -13,6 +13,9 @@ import DialogMessage from '../../components/DialogMessage';
 import { LinearGradient } from 'expo-linear-gradient';
 import logger from '../../utils/logger';
 import * as Application from 'expo-application';
+import useKeyboardState from '../../hooks/useKeyboardState';
+import enviroment from '../../manifest';
+import StagingNote from '../../components/StagingNote';
 
 type LoginMutationDataType = {
     login: {
@@ -39,6 +42,7 @@ const LoginScreen: FC = () => {
     const [identifier, setIdentifier] = useState<string | undefined>(undefined);
     const [password, setPassword] = useState<string | undefined>(undefined);
     const [executeLogin, { data, loading, error }] = useMutation<LoginMutationDataType>(LOGIN);
+    const [isKeyboardVisible] = useKeyboardState();
 
     const [isThereAnError, setIsthereAnError] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
@@ -82,7 +86,7 @@ const LoginScreen: FC = () => {
         <Screen style={styles.container}>
             <LinearGradient
                 style={styles.background}
-                colors={['#184260', '#246492', '#44b0c6']} />
+                colors={[theme.colors.primaryDarker, theme.colors.primary, theme.colors.primaryLighter]} />
             <View style={styles.iconContainer}>
                 <Image style={styles.icon} source={require('../../assets/protecan-logo.png')} />
             </View>
@@ -117,10 +121,15 @@ const LoginScreen: FC = () => {
                     mode="contained">
                     Ingresar
                 </Button>
+                <StagingNote />
             </View>
             <View style={styles.disclaimer}>
-                <Text style={styles.disclaimerText}>Protecan Seguridad</Text>
+                {!isKeyboardVisible && 
+                (<>
+                <Text style={styles.disclaimerText}>Protecan Seguridad{!enviroment.IS_PRODUCTION ? ' - STAGING' : ''}</Text>
                 {Application.nativeApplicationVersion && <Text style={styles.disclaimerText}>Version: {Application.nativeApplicationVersion}</Text>}
+                </>)
+                }
             </View>
             <DialogMessage
                 title="Error"
