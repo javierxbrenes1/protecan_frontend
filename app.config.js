@@ -2,7 +2,7 @@ module.exports = {
   "expo": {
     "name": "Protecan Seguridad",
     "slug": "protecan-seguridad",
-    "version": "1.2.0",
+    "version": process.env.VERSION,
     "jsEngine": "hermes",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -27,9 +27,9 @@ module.exports = {
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "backgroundColor": "#184260"
       },
-      "package": "com.protecanseguridad.app",
+      "package": process.env.ANDROID_PACKAGE,
       "versionCode": process.env.ANDROID_VERSION_CODE
     },
     "web": {
