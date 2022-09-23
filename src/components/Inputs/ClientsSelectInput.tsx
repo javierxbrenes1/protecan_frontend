@@ -4,10 +4,10 @@ import { useGlobal } from '../../globalContext';
 import { useQuery } from '@apollo/react-hooks';
 import { GET_CLIENTS } from '../../queries';
 import { GetClientsType } from '../../graphqlTypes/responses';
-import Picker from "./Picker";
+import RNPicker from "./RNPicker";
 import { logGraphqlErrors } from "../../utils/errorHandler";
 
-const ClientsSelectInput: FC<{ label: string, value: string, onChange: (value: string, label: string) => void, returnIdOnly?: boolean }> = ({ label, value, onChange, returnIdOnly }) => {
+const ClientsSelectInput: FC<{ label: string, value: string, onChange: (value: string, label: string) => void, returnIdOnly?: boolean }> = ({ label, value, onChange }) => {
     const [clients, setClients] = useState<{ value: string, label: string }[]>([]);
     const { userDetails, setShowLoading } = useGlobal();
 
@@ -26,9 +26,19 @@ const ClientsSelectInput: FC<{ label: string, value: string, onChange: (value: s
         setShowLoading(loading);
     }, [loading]);
 
+    const handleOnChange = (value: string) => {
+        const option = clients.find((c) => c.value === value);
+        onChange(value, option?.label || value);
+    }
 
     return (
-        <Picker options={clients} placeholder={label} value={value} onSelection={onChange} />
+        <RNPicker 
+        options={clients}
+         placeholder={label} 
+         value={value} 
+         onSelection={handleOnChange}
+         style={{marginBottom: 10}}
+        />
     )
 };
 

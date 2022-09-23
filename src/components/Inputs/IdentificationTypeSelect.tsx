@@ -1,13 +1,13 @@
 import { FC } from "react";
 import { cdrIdenficationTypes, InputFormHookProps } from "../../constants&Types";
 import InputText from "./InputText";
-import Picker from "./Picker";
+import RNPicker from "./RNPicker";
 
 
 
 const IdentificationTypeSelect: FC<InputFormHookProps & { disabled?: boolean }> = ({ value, onChange, label, disabled }) => {
 
-    const handleSelection = (value: string, _label: string) => {
+    const handleSelection = (value: string) => {
         onChange(value);
     }
 
@@ -15,11 +15,10 @@ const IdentificationTypeSelect: FC<InputFormHookProps & { disabled?: boolean }> 
         return <InputText value={value} disabled onChange={() => { }} label={label} />
     }
 
-    return (<Picker
+    return (<RNPicker
         value={value}
         placeholder={label}
         options={cdrIdenficationTypes}
-        noVerticalMargin
         onSelection={handleSelection} />);
 
 

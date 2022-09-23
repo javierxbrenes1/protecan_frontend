@@ -6,6 +6,8 @@ import logger from '../../utils/logger';
 import { CdrEntry } from "../../types";
 import * as SecureStore from 'expo-secure-store';
 import theme from '../../theme';
+import { Platform } from 'react-native';
+import * as Linking from 'expo-linking';
 
 const USER_PERMISSION_KEY = 'USER_PERMISSION_KEY';
 
@@ -18,6 +20,12 @@ const openPdf = async (uri: string) => {
 }
 
 export const downloadPdf = async (item: CdrEntry) => {
+    if(Platform.OS === 'ios') {
+        if (!item?.report?.name) return;
+        Linking.openURL(item.report.url);
+        return;
+    }
+
     const savedDirectoryPermission = await SecureStore.getItemAsync(USER_PERMISSION_KEY);
     let perm = savedDirectoryPermission ? JSON.parse(savedDirectoryPermission) : null;
     // todo make sure the folder exists

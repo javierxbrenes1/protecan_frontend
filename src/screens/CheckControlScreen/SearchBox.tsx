@@ -1,9 +1,9 @@
 import React, { useState, FC } from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { cdrStatesOptions } from '../../constants&Types';
 import { Button, Divider } from 'react-native-paper';
 import { ClientsSelectInput } from '../../components/Inputs';
-import Picker from '../../components/Inputs/Picker';
+import RNPicker from '../../components/Inputs/RNPicker';
 import globalStyles from '../../globalStyles';
 
 interface SearchBoxProps {
@@ -14,7 +14,7 @@ const SearchBox: FC<SearchBoxProps> = ({ onSearch }) => {
     const [selectedClient, setSelectedClient] = useState<string>('')
     const [selectedStatus, setSelectedStatus] = useState('');
 
-    const handleSelection = (type: 'client' | 'status') => (value: string, _label: string) => {
+    const handleSelection = (type: 'client' | 'status') => (value: string) => {
         if (type === 'client') {
             setSelectedClient(value);
             return;
@@ -30,7 +30,7 @@ const SearchBox: FC<SearchBoxProps> = ({ onSearch }) => {
                     label='Selecciona el Cliente'
                     value={selectedClient}
                     onChange={handleSelection('client')} />
-                <Picker
+                <RNPicker
                     placeholder='Selecciona el Estado'
                     value={selectedStatus}
                     onSelection={handleSelection('status')}
